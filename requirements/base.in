@@ -1,0 +1,6 @@
+# necessary
+asyncio
+discord.py
+
+# development
+pytest
