@@ -1,6 +1,7 @@
 # necessary
 asyncio
-discord.py
+psycopg2
+pony
 
 # development
 pytest

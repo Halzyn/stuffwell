@@ -6,4 +6,4 @@ class Sleep(CommandBase):
         super().__init__(client, message)
 
     async def run_command(self):
-        await self.client.send_message(self.message.channel, "Zzz...")
+        await self.message.channel.send("Zzz...")
