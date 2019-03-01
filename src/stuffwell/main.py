@@ -1,8 +1,9 @@
 import discord
 
-from .commands_dict import commands
+from commands.commands_dict import commands_dict
 
 client = discord.Client()
+TOKEN = 'NTUwNzY4NjM1NjgxOTY0MDY2.D1p9Dg.vnjJRoWIiASAk15NtQalQVkD9dg'
 
 
 @client.event
@@ -15,8 +16,10 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    command = commands.get_command(message.content)
-    return command(client, message).run_command()
+    command = commands_dict.get(message.content)
+    if command is None:
+        return
+    return await command(client, message).run_command()
 
 
-client.run("token")
+client.run(TOKEN)
