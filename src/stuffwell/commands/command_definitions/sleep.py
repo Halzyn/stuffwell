@@ -1,4 +1,4 @@
-from .base import CommandBase
+from ..base import CommandBase
 
 
 class Sleep(CommandBase):
