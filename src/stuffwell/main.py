@@ -1,6 +1,11 @@
+from commands.commands_dict import commands_dict
+
 import discord
 
-from commands.commands_dict import commands_dict
+from discord.ext.commands import Bot
+
+from markov.models import generate_message, save_message
+
 
 bot_activity = discord.Activity(
     application_id=1,
@@ -10,7 +15,7 @@ bot_activity = discord.Activity(
     details="i dont know what this is",
 )
 
-client = discord.Client(activity=bot_activity)
+client = Bot(command_prefix="!", activity=bot_activity)
 TOKEN = "NTUwNzY4NjM1NjgxOTY0MDY2.D1p9Dg.vnjJRoWIiASAk15NtQalQVkD9dg"
 
 
@@ -24,7 +29,12 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    command = commands_dict.get(message.content)
+    save_message(message)
+
+    if client.user.id in [user.id for user in message.mentions]:
+        await generate_message(message)
+        return
+    command = commands_dict.get(message.content.split(" ", 1)[0])
     if command is None:
         return
     return await command(client, message).run_command()
