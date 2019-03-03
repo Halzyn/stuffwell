@@ -5,6 +5,7 @@ from .command_definitions.user import UserCommands
 commands_dict = {
     "!q": QuoteCommands,
     "!quote": QuoteCommands,
+    "!say": UserCommands,
     "!user": UserCommands,
     "!sleep": Sleep,
 }
