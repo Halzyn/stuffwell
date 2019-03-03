@@ -1,6 +1,6 @@
 # necessary
 asyncio
-markovify
+cobe
 psycopg2
 pony
 

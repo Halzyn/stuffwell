@@ -29,7 +29,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    save_message(message)
+    save_message(client, message)
 
     if client.user.id in [user.id for user in message.mentions]:
         await generate_message(message)

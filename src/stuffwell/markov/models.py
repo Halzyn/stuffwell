@@ -1,21 +1,38 @@
-import markovify
+from cobe.brain import Brain
 
 
 async def generate_message(message):
-    with open("./markov/brain.txt") as f:
-        text = f.read()
-
-    text_model = markovify.NewlineText(text, state_size=3, retain_original=False)
-    # async with message.channel.typing():
-    sentence = text_model.make_sentence()
-    await message.channel.send(sentence)
-
-
-def save_message(message):
     content = message.content.replace("\x00", "").strip()
-    if content == "" or content.startswith("$"):
-        return
     content = content.replace("<@550768635681964066> ", "")
-    if message.channel.id == int("256944846437220352"):
-        with open("./markov/brain.txt", "a") as f:
-            f.write(content + "\n")
+    b = Brain("./markov/brain.db")
+    # async with message.channel.typing():
+    words = b.reply(content).split(" ")
+    for word in words:
+        if word.startswith("<@"):
+            words.remove(word)
+    response = " ".join(words)
+    await message.channel.send(response)
+
+
+def save_message(client, message):
+    content = message.content.replace("\x00", "")
+    content = content.replace("<@550768635681964066>", "").strip()
+    if content == "" or content.startswith(("$", "p!", "!")):
+        return
+    if message.author.id != client.user.id:
+        b = Brain("./markov/brain.db")
+        b.learn(content)
+
+
+# Code for manually training the markov chain.
+# def main():
+#     with open("temp_copy.txt", errors="ignore") as f:
+#         content = f.readlines()
+#     content = [x.strip() for x in content]
+#     b = Brain("brain.db")
+#     for line in content:
+#         b.learn(line)
+
+
+# if __name__ == "__main__":
+#     main()
