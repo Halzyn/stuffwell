@@ -108,3 +108,6 @@ settings.json
 
 # flake 8
 .flake8
+
+# brain file 
+*.db
